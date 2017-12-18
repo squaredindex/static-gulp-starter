@@ -23,6 +23,7 @@
     "gulp-htmlmin": "^3.0.0",
     "gulp-if": "^2.0.2",
     "gulp-imagemin": "^4.0.0",
+    "gulp-purify-css": "^0.1.0",
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.6.1",
     "gulp-tinypng-nokey": "^1.1.0",

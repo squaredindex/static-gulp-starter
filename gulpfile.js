@@ -34,6 +34,7 @@ const gulp          = require('gulp');
       cmq           = require('crlab-gulp-combine-media-queries');
       babel         = require('gulp-babel');
       uncss         = require('gulp-uncss');
+      purify        = require('gulp-purify-css');
       cleanCSS      = require('gulp-clean-css');
       cssshrink     = require('gulp-cssshrink');
       htmlmin       = require('gulp-htmlmin');
@@ -116,6 +117,7 @@ gulp.task('cssprod', function () {
             cascade: false
         }))
         .pipe(cmq())
+        //.pipe(purify(['./src/js/**/*.js', './src/**/*.html']))
         .pipe(uncss({
             html: ['src/**/*.html'],
             ignore: [
