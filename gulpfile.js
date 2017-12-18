@@ -74,16 +74,6 @@ gulp.src('src/img/**/*{png,apng,jpg,jpeg}')
 });
 
 
-// Minify JavaScript
-
-gulp.task('minjs', function(){
-    gulp.src('src/js/*.js')
-        .pipe(uglify())
-        .pipe(gulp.dest('dist/js'))
-        .pipe(browserSync.reload({stream: true}));
-});
-
-
 // Compile SASS/SCSS
 
 gulp.task('sass', function(){
@@ -139,7 +129,7 @@ gulp.task('htmlprod', function() {
 // Concatinate & Minify Scripts
 
 gulp.task('scripts', function(){
-    gulp.src('src/js/*.js')
+    gulp.src('src/js/**/*.js')
         .pipe(concat('app.js'))
         .pipe(uglify())
         .pipe(gulp.dest('dist/js'))
