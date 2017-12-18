@@ -1,4 +1,3 @@
-
 /* ==========================================================================
    GETTING STARTED - If you're using this on a new project
    ========================================================================== */
@@ -21,24 +20,24 @@
 
 
 // Require Gulp - Don't remove
-const gulp                  = require('gulp');
-      imagemin              = require('gulp-imagemin');
-      tiny                  = require('gulp-tinypng-nokey');
-      concat                = require('gulp-concat');
-      uglify                = require('gulp-uglify');
-      sass                  = require('gulp-sass');
-      sourcemaps            = require('gulp-sourcemaps');
-      useref                = require('gulp-useref');
-      gulpif                = require('gulp-if');
-      concatCss             = require('gulp-concat-css');
-      autoprefixer          = require('gulp-autoprefixer');
-      cmq                   = require('crlab-gulp-combine-media-queries');
-      babel                 = require('gulp-babel');
-      uncss                 = require('gulp-uncss');
-      cleanCSS              = require('gulp-clean-css');
-      cssshrink             = require('gulp-cssshrink');
-      htmlmin               = require('gulp-htmlmin');
-      browserSync           = require('browser-sync').create();
+const gulp          = require('gulp');
+      imagemin      = require('gulp-imagemin');
+      tiny          = require('gulp-tinypng-nokey');
+      concat        = require('gulp-concat');
+      uglify        = require('gulp-uglify');
+      sass          = require('gulp-sass');
+      sourcemaps    = require('gulp-sourcemaps');
+      useref        = require('gulp-useref');
+      gulpif        = require('gulp-if');
+      concatCss     = require('gulp-concat-css');
+      autoprefixer  = require('gulp-autoprefixer');
+      cmq           = require('crlab-gulp-combine-media-queries');
+      babel         = require('gulp-babel');
+      uncss         = require('gulp-uncss');
+      cleanCSS      = require('gulp-clean-css');
+      cssshrink     = require('gulp-cssshrink');
+      htmlmin       = require('gulp-htmlmin');
+      browserSync   = require('browser-sync').create();
 
 
 /* ==========================================================================
@@ -53,66 +52,83 @@ const gulp                  = require('gulp');
 
 // Copy all HTML files to dist
 
-gulp.task('copyhtml', function(){
+gulp.task('copyhtml', function () {
     gulp.src('src/**/*.html')
         .pipe(gulp.dest('dist'))
-        .pipe(browserSync.reload({stream: true}));
+        .pipe(browserSync.reload({
+            stream: true
+        }));
 });
 
 
 // Minify Images
 
-gulp.task('minimg', function() {
-gulp.src('src/img/*')
-    .pipe(imagemin())
-    .pipe(gulp.dest('dist/img')),
+gulp.task('minimg', function () {
+    gulp.src('src/img/**/*')
+        .pipe(imagemin())
+        .pipe(gulp.dest('dist/img'))
+});
+
+
 
 // TinyPNG (NoKey)
-gulp.src('src/img/**/*{png,apng,jpg,jpeg}')
-    .pipe(tiny())
-    .pipe(gulp.dest('dist/img'));
+
+gulp.task('tinypng', function () {
+    gulp.src('src/img/**/*{png,apng,jpg,jpeg}')
+        .pipe(tiny())
+        .pipe(gulp.dest('dist/img'));
 });
 
 
 // Compile SASS/SCSS
 
-gulp.task('sass', function(){
+gulp.task('sass', function () {
     gulp.src('src/styles/sass/**/*.scss')
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
         .pipe(sourcemaps.write('../../../dist/css/maps'))
         .pipe(gulp.dest('src/styles/css'))
-        .pipe(browserSync.reload({stream: true}));
+        .pipe(browserSync.reload({
+            stream: true
+        }));
 });
 
 
 // Concatinate CSS
 
-gulp.task('css', function(){
+gulp.task('css', function () {
     gulp.src('src/styles/css/*.css')
         .pipe(concatCss('app.css'))
         .pipe(gulp.dest('dist/css'))
-        .pipe(browserSync.reload({stream: true}));
+        .pipe(browserSync.reload({
+            stream: true
+        }));
 });
 
 
 // Remove unused CSS & Minify
 
-gulp.task('cssprod', function(){
+gulp.task('cssprod', function () {
     gulp.src('dist/css/**/*.css')
         .pipe(autoprefixer({
             browsers: ['last 2 version'],
+            // grid: true,
             cascade: false
         }))
         .pipe(cmq())
         .pipe(uncss({
             html: ['src/**/*.html'],
-            // Add JS classes/IDs to ignore list
             ignore: [
                 ''
             ]
         }))
-        .pipe(cleanCSS({level: {1: {specialComments: 0}}}))
+        .pipe(cleanCSS({
+            level: {
+                1: {
+                    specialComments: 0
+                }
+            }
+        }))
         .pipe(cssshrink())
         .pipe(gulp.dest('dist/css'));
 });
@@ -120,30 +136,36 @@ gulp.task('cssprod', function(){
 
 // Minify HTML
 
-gulp.task('htmlprod', function() {
+gulp.task('htmlprod', function () {
     gulp.src('src/**/*.html')
-      .pipe(htmlmin({collapseWhitespace: true}))
-      .pipe(gulp.dest('dist'));
-  });
+        .pipe(htmlmin({
+            collapseWhitespace: true
+        }))
+        .pipe(gulp.dest('dist'));
+});
 
 // Concatinate & Minify Scripts
 
-gulp.task('scripts', function(){
+gulp.task('scripts', function () {
     gulp.src('src/js/**/*.js')
         .pipe(concat('app.js'))
         //.pipe(useref())
         .pipe(gulpif('*.js', sourcemaps.init()))
-        .pipe(gulpif('*.js', babel({presets: ['env']})))
+        .pipe(gulpif('*.js', babel({
+            presets: ['env']
+        })))
         .pipe(gulpif('*.js', uglify()))
         .pipe(gulpif('*.js', sourcemaps.write('.')))
         .pipe(gulp.dest('dist/js'))
-        .pipe(browserSync.reload({stream: true}));
+        .pipe(browserSync.reload({
+            stream: true
+        }));
 });
 
 
 // Browser Sync - live reloading
 
-gulp.task('browserSync', function() {
+gulp.task('browserSync', function () {
     browserSync.init({
         injectChanges: true,
         server: {
@@ -152,7 +174,7 @@ gulp.task('browserSync', function() {
     });
 });
 
-gulp.task('watch', ['browserSync', 'sass', 'css'], function(){
+gulp.task('watch', ['browserSync', 'sass', 'css'], function () {
     gulp.watch('src/styles/sass/**/*.scss', ['sass']);
     gulp.watch('src/styles/css/**/*.css', ['css']);
     gulp.watch('src/js/**/*.js', ['scripts']);
