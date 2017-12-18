@@ -95,7 +95,7 @@ gulp.task('sass', function () {
 });
 
 
-// Concatinate CSS
+// Concatenate CSS
 
 gulp.task('css', function () {
     gulp.src('src/styles/css/*.css')
@@ -146,11 +146,12 @@ gulp.task('htmlprod', function () {
         .pipe(gulp.dest('dist'));
 });
 
-// Concatinate & Minify Scripts
+// Concatenate & Minify Scripts
 
 gulp.task('scripts', function () {
     gulp.src('src/js/**/*.js')
         .pipe(concat('app.js'))
+        // Uncomment useref if you want to control concatenation via your templates (HTML)
         //.pipe(useref())
         .pipe(gulpif('*.js', sourcemaps.init()))
         .pipe(gulpif('*.js', babel({
