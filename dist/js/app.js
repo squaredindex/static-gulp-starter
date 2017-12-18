@@ -1,1 +1,2 @@
-console.log("this is the extras.js file"),console.log("This is the framework js file");
+"use strict";var hello=console.log("hello world");
+//# sourceMappingURL=app.js.map

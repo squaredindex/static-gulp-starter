@@ -131,10 +131,17 @@ gulp.task('htmlprod', function() {
 gulp.task('scripts', function(){
     gulp.src('src/js/**/*.js')
         .pipe(concat('app.js'))
-        .pipe(uglify())
+        //.pipe(useref())
+        .pipe(gulpif('*.js', sourcemaps.init()))
+        .pipe(gulpif('*.js', babel({presets: ['env']})))
+        .pipe(gulpif('*.js', uglify()))
+        .pipe(gulpif('*.js', sourcemaps.write('.')))
         .pipe(gulp.dest('dist/js'))
         .pipe(browserSync.reload({stream: true}));
 });
+
+
+// Browser Sync - live reloading
 
 gulp.task('browserSync', function() {
     browserSync.init({
@@ -149,7 +156,7 @@ gulp.task('watch', ['browserSync', 'sass', 'css'], function(){
     gulp.watch('src/styles/sass/**/*.scss', ['sass']);
     gulp.watch('src/styles/css/**/*.css', ['css']);
     gulp.watch('src/js/**/*.js', ['scripts']);
-    gulp.watch('src/**/*.html', ['copyhtml']);
+    gulp.watch('src/**/*.html', ['copyhtml', 'css']);
     gulp.watch('src/img/*.', ['minimg']);
 });
 

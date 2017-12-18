@@ -1,0 +1,1 @@
+{"version":3,"sources":["app.js"],"names":["hello","console","log"],"mappings":"aAAA,IAAIA,MAAQC,QAAQC,IAAI","file":"app.js","sourcesContent":["let hello = console.log(\"hello world\");"]}
